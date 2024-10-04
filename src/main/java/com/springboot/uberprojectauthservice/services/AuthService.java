@@ -4,7 +4,6 @@ import com.springboot.uberprojectauthservice.dto.PassengerDto;
 import com.springboot.uberprojectauthservice.dto.PassengerSignupRequestDto;
 import com.springboot.uberprojectauthservice.models.Passenger;
 import com.springboot.uberprojectauthservice.repositories.PassengerRepository;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
