@@ -3,6 +3,7 @@ package com.springboot.uberprojectauthservice.services;
 import com.springboot.uberprojectauthservice.helpers.AuthPassengerDetail;
 import com.springboot.uberprojectauthservice.models.Passenger;
 import com.springboot.uberprojectauthservice.repositories.PassengerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,21 +19,16 @@ import java.util.Optional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    @Autowired
     private PassengerRepository passengerRepository;
-
-    public UserDetailsServiceImpl(PassengerRepository passengerRepository) {
-        this.passengerRepository = passengerRepository;
-    }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Passenger> Passenger = passengerRepository.findByEmail(username);
-        if(Passenger.isPresent()) {
-            return new AuthPassengerDetail(Passenger.get());
-        }
-        else {
-            throw new UsernameNotFoundException("Cannot find passenger by given username/email");
-        }
+            Optional<Passenger> passenger = this.passengerRepository.findPassengerByEmail(username);
+            if(passenger.isPresent()) {
+                return new AuthPassengerDetail(passenger.get());
+            }
+            throw new UsernameNotFoundException("Passenger not found");
     }
 }

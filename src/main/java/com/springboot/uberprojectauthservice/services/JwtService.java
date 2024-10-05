@@ -25,7 +25,7 @@ public class JwtService implements CommandLineRunner {
     /*
         This method creates a brand-new JWT token for us based on provided payload.
     */
-    private String createToken(Map<String , Object> payload , String email) {
+    public String createToken(Map<String , Object> payload , String email) {
         Date now = new Date();
         Date expirationTime = new Date(now.getTime() + expiry*1000L);
         SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
@@ -37,7 +37,11 @@ public class JwtService implements CommandLineRunner {
                 .compact();
     }
 
-    private Claims extractAllPayload(String token) {
+    public String createToken(String email) {
+        return this.createToken(new HashMap<>(), email);
+    }
+
+    public Claims extractAllPayload(String token) {
         return Jwts
                 .parser()
                 .verifyWith(getSignKey())
@@ -46,7 +50,7 @@ public class JwtService implements CommandLineRunner {
                 .getPayload();
     }
 
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         Claims claims = extractAllPayload(token);
         return claims.getExpiration();
     }
@@ -56,7 +60,7 @@ public class JwtService implements CommandLineRunner {
 //        return claims.getSubject();
 //    }
 
-    private Object extractParticularPayload(String token , String payloadProperty) {
+    public Object extractParticularPayload(String token , String payloadProperty) {
         Claims claims = extractAllPayload(token);
         return claims.get(payloadProperty, Object.class);
     }
@@ -66,15 +70,15 @@ public class JwtService implements CommandLineRunner {
         This method checks if the token expiry was before the current time stamp or not
         returns true if token is expired or false.
      */
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    private SecretKey getSignKey() {
+    public SecretKey getSignKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
     }
 
-    private Boolean validateToken(String token , String email) {
+    public Boolean validateToken(String token , String email) {
         final String userEmailFetchedFromToken = extractParticularPayload(token , email).toString();
         return userEmailFetchedFromToken.equals(email) && !isTokenExpired(token);
     }
