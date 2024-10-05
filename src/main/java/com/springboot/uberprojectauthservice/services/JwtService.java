@@ -2,16 +2,13 @@ package com.springboot.uberprojectauthservice.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.flywaydb.core.FlywayExecutor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,13 +48,11 @@ public class JwtService implements CommandLineRunner {
 
     private Date extractExpiration(String token) {
         Claims claims = extractAllPayload(token);
-        System.out.println(claims.getExpiration() + "   7777777777777777777777777777777777");
         return claims.getExpiration();
     }
 
 //    private String extractEmail(String token) {
 //        Claims claims = extractAllPayload(token);
-//        System.out.println(claims + "   yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 //        return claims.getSubject();
 //    }
 
